@@ -5,31 +5,39 @@
   <style>
     .container {
       width: 50%; /* Container takes 50% of the viewport width */
-      margin: auto; /* Centers the container horizontally */
+      margin-left: 0; /* Aligns the container to the left */
     }
-    .images {
-      display: flex; /* Enables flexbox layout */
-      flex-wrap: wrap; /* Allows items to wrap to the next line */
-      justify-content: space-between; /* Distributes space between and around content items */
+    table {
+      width: 100%; /* Makes the table take up the entire width of the container */
     }
-    .images img {
-      width: 49%; /* Each image takes just under half of the container's width */
+    img {
+      width: 49%; /* Each image takes just under half of the table's width */
       height: auto; /* Maintains the aspect ratio of the images */
+      display: block; /* Removes extra space below the image */
+    }
+    td {
+      padding: 0; /* Removes padding inside cells */
     }
   </style>
 </head>
 <body>
   <h2>Filters Measurements</h2>
   <div class="container">
-    <ul>
-      <li>
-        <a href="https://www.aliexpress.com/item/1005004674047604.html">868MHz RFID SAW bandpass filter, 867～869MHz, 2MHz bandwidth Module Board</a>
-        <div class="images">
-          <img src="./img/SAW_868_BPF_1_0.png">
-          <img src="./img/SAW_868_BPF_1_1.png">
-        </div>
-      </li>
-    </ul>
+    <table>
+      <tr>
+        <td colspan="2">
+          <a href="https://www.aliexpress.com/item/1005004674047604.html">868MHz RFID SAW bandpass filter, 867～869MHz, 2MHz bandwidth Module Board</a>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <img src="./img/SAW_868_BPF_1_0.png" alt="Image of 868MHz RFID SAW Bandpass Filter">
+        </td>
+        <td>
+          <img src="./img/SAW_868_BPF_1_1.png" alt="Different View of 868MHz RFID SAW Bandpass Filter">
+        </td>
+      </tr>
+    </table>
   </div>
 </body>
 </html>
