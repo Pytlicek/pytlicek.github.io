@@ -3,31 +3,54 @@
 <head>
   <title>Filters Measurements</title>
   <style>
+    body {
+      font-family: Arial, sans-serif; /* Sets a clean, modern font for the page */
+    }
     .container {
       width: 50%; /* Container takes 50% of the viewport width */
       margin-left: 0; /* Aligns the container to the left */
     }
     table {
       width: 100%; /* Makes the table take up the entire width of the container */
+      border-collapse: collapse; /* Collapses border to avoid double border appearance */
+      box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1); /* Adds subtle shadow for depth */
+    }
+    th, td {
+      padding: 8px; /* Adds padding to table cells */
+      border-bottom: 1px solid #ddd; /* Adds a light border for each cell */
+    }
+    th {
+      background-color: #f4f4f4; /* Light grey background for the header row */
+      text-align: left; /* Aligns text to the left */
+      font-size: 16px; /* Slightly larger font size for headers */
+    }
+    a {
+      color: #337ab7; /* Sets link color */
+      text-decoration: none; /* Removes underline from links */
+    }
+    a:hover {
+      text-decoration: underline; /* Adds underline on hover for better user interaction */
     }
     img {
       width: 49%; /* Each image takes just under half of the table's width */
       height: auto; /* Maintains the aspect ratio of the images */
       display: block; /* Removes extra space below the image */
     }
-    td {
-      padding: 0; /* Removes padding inside cells */
+    .header {
+      font-size: 20px; /* Larger font size for the main header */
+      text-align: center; /* Center aligns the main header */
+      margin-top: 20px; /* Adds space above the header */
     }
   </style>
 </head>
 <body>
-  <h2>Filters Measurements</h2>
+  <h2 class="header">Filters Measurements</h2>
   <div class="container">
     <table>
       <tr>
-        <td colspan="2">
+        <th colspan="2">
           <a href="https://www.aliexpress.com/item/1005004674047604.html">868MHz RFID SAW bandpass filter, 867～869MHz, 2MHz bandwidth Module Board</a>
-        </td>
+        </th>
       </tr>
       <tr>
         <td>
@@ -37,6 +60,7 @@
           <img src="./img/SAW_868_BPF_1_1.png" alt="Different View of 868MHz RFID SAW Bandpass Filter">
         </td>
       </tr>
+      <!-- Add more items in similar structure as needed -->
     </table>
   </div>
 </body>
