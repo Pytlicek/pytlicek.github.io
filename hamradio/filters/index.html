@@ -3,16 +3,18 @@
 <head>
   <title>Filters Measurements</title>
   <style>
-    ul {
-      display: flex;
-      padding: 0;
+    .container {
+      width: 50%; /* Container takes 50% of the viewport width */
+      margin: auto; /* Centers the container horizontally */
     }
-    li {
-      flex: 1;
+    .images {
+      display: flex; /* Enables flexbox layout */
+      flex-wrap: wrap; /* Allows items to wrap to the next line */
+      justify-content: space-between; /* Distributes space between and around content items */
     }
-    img {
-      width: 100%;
-      height: auto;
+    .images img {
+      width: 49%; /* Each image takes just under half of the container's width */
+      height: auto; /* Maintains the aspect ratio of the images */
     }
   </style>
 </head>
