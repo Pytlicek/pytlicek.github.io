@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LibreSDR Configuration and Resources</title>
+</head>
+<body>
+    <h1>LibreSDR Configuration and Resources</h1>
+
+    <h2>LibreSDR Firmware Repository</h2>
+    <p>You can access the LibreSDR firmware on GitHub here:</p>
+    <p><a href="https://github.com/hz12opensource/libresdr" target="_blank">LibreSDR Firmware Repository</a></p>
+
+    <h2>Order Link</h2>
+    <p>Order LibreSDR from Aliexpress:</p>
+    <p><a href="https://www.aliexpress.com/item/1005005165734650.html" target="_blank">Order LibreSDR</a></p>
+
+    <h2>Configuration Instructions</h2>
+    <p>Use the following settings for configuring your LibreSDR:</p>
+    <pre>
+IP: 192.168.33.10
+Username: root
+Password: analog
+
+fw_setenv ad936x_ext_refclk "<10000000>"
+fw_setenv refclk_source external
+fw_setenv xo_correction 10000000
+
+fw_setenv ipaddr_eth "192.168.33.10"
+pluto_reboot reset
+    </pre>
+
+    <p>Ensure all commands are entered correctly for proper configuration.</p>
+</body>
+</html>
