@@ -1,12 +1,14 @@
 HA LoRa MeshCore HomeAssistant automation:
 
 ```
-alias: Kotol_Status
+alias: Kotol_Status LoRa
 description: ""
 triggers:
   - event_type: meshcore_message
     trigger: event
-conditions: []
+conditions:
+  - condition: template
+    value_template: "{{ trigger.event.data.channel_idx == 4 }}"
 actions:
   - choose:
       - conditions:
@@ -22,8 +24,9 @@ actions:
           - data:
               channel_idx: 4
               message: >
-                Heating / Boiler is: {% if is_state('binary_sensor.kotol_valve','on') %}ON{%
-                else %}OFF{% endif %}
+                Heating / Boiler is: {% if
+                is_state('binary_sensor.kotol_valve','on') %}ON{% else %}OFF{%
+                endif %}
             action: meshcore.send_channel_message
       - conditions:
           - condition: or
@@ -54,5 +57,4 @@ actions:
               message: "Commands: heating, temp, teplota, kotol"
             action: meshcore.send_channel_message
 mode: queued
-
 ```
