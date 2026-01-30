@@ -1,0 +1,58 @@
+HA LoRa MeshCore HomeAssistant automation:
+
+```
+alias: Kotol_Status
+description: ""
+triggers:
+  - event_type: meshcore_message
+    trigger: event
+conditions: []
+actions:
+  - choose:
+      - conditions:
+          - condition: or
+            conditions:
+              - condition: template
+                value_template: "{{ trigger.event.data.message | lower == 'boiler' }}"
+              - condition: template
+                value_template: "{{ trigger.event.data.message | lower == 'kotol' }}"
+              - condition: template
+                value_template: "{{ trigger.event.data.message | lower == 'heating' }}"
+        sequence:
+          - data:
+              channel_idx: 4
+              message: >
+                Heating / Boiler is: {% if is_state('binary_sensor.kotol_valve','on') %}ON{%
+                else %}OFF{% endif %}
+            action: meshcore.send_channel_message
+      - conditions:
+          - condition: or
+            conditions:
+              - condition: template
+                value_template: "{{ trigger.event.data.message | lower == 'teplota' }}"
+              - condition: template
+                value_template: "{{ trigger.event.data.message | lower == 'temp' }}"
+              - condition: template
+                value_template: "{{ trigger.event.data.message | lower == 'temperature' }}"
+        sequence:
+          - data:
+              channel_idx: 4
+              message: >
+                Current: {{ state_attr('climate.kotol','current_temperature')
+                }}°C Setpoint: {{ state_attr('climate.kotol','temperature') }}°C
+            action: meshcore.send_channel_message
+      - conditions:
+          - condition: or
+            conditions:
+              - condition: template
+                value_template: "{{ trigger.event.data.message | lower == '?' }}"
+              - condition: template
+                value_template: "{{ trigger.event.data.message | lower == 'help' }}"
+        sequence:
+          - data:
+              channel_idx: 4
+              message: "Commands: heating, temp, teplota, kotol"
+            action: meshcore.send_channel_message
+mode: queued
+
+```
