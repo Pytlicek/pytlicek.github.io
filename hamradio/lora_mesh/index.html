@@ -1,8 +1,8 @@
 HA LoRa MeshCore HomeAssistant automation:
 
 ```
-alias: Kotol_Status LoRa
-description: ""
+alias: MeshCore Actions
+description: MeshCore Actions via LoRa messages on channel 4 - homeassistant
 triggers:
   - event_type: meshcore_message
     trigger: event
@@ -11,6 +11,21 @@ conditions:
     value_template: "{{ trigger.event.data.channel_idx == 4 }}"
 actions:
   - choose:
+      - conditions:
+          - condition: or
+            conditions:
+              - condition: template
+                value_template: "{{ trigger.event.data.message | lower == '?' }}"
+              - condition: template
+                value_template: "{{ trigger.event.data.message | lower == 'help' }}"
+        sequence:
+          - data:
+              channel_idx: 4
+              message: |-
+                💡 Info Commands: heating, temp, teplota, kotol, voc
+
+                🛠️ Configure Commands: preheat, heat_on, heat_off, cool
+            action: meshcore.send_channel_message
       - conditions:
           - condition: or
             conditions:
@@ -48,13 +63,80 @@ actions:
           - condition: or
             conditions:
               - condition: template
-                value_template: "{{ trigger.event.data.message | lower == '?' }}"
-              - condition: template
-                value_template: "{{ trigger.event.data.message | lower == 'help' }}"
+                value_template: "{{ trigger.event.data.message | lower == 'voc' }}"
         sequence:
           - data:
               channel_idx: 4
-              message: "Commands: heating, temp, teplota, kotol"
+              message: >
+                Current VOC index in Living Room: {{ states('sensor.ikea_of_sweden_vindstyrka_voc_index') }}
+            action: meshcore.send_channel_message
+      - conditions:
+          - condition: or
+            conditions:
+              - condition: template
+                value_template: "{{ trigger.event.data.message | lower == 'preheat' }}"
+              - condition: template
+                value_template: "{{ trigger.event.data.message | lower == 'heat_on' }}"
+        sequence:
+          - data:
+              value: "{{ state_attr('climate.kotol','temperature') }}"
+            target:
+              entity_id: input_number.kotol_previous_setpoint
+            action: input_number.set_value
+          - target:
+              entity_id: input_boolean.kotol_preheat_active
+            action: input_boolean.turn_on
+          - target:
+              entity_id: climate.kotol
+            data:
+              temperature: >
+                {{ [state_attr('climate.kotol','current_temperature') | float +
+                1, 23] | min }}
+            action: climate.set_temperature
+          - data:
+              channel_idx: 4
+              message: >
+                Preheat ON. Boosting to {{
+                [state_attr('climate.kotol','current_temperature') | float + 1,
+                23] | min }} °C (max 23°C)
+            action: meshcore.send_channel_message
+      - conditions:
+          - condition: or
+            conditions:
+              - condition: template
+                value_template: "{{ trigger.event.data.message | lower == 'heat_off' }}"
+              - condition: template
+                value_template: "{{ trigger.event.data.message | lower == 'cool' }}"
+        sequence:
+          - choose:
+              - conditions:
+                  - condition: state
+                    entity_id: input_boolean.kotol_preheat_active
+                    state: "on"
+                sequence:
+                  - target:
+                      entity_id: climate.kotol
+                    data:
+                      temperature: >-
+                        {{ states('input_number.kotol_previous_setpoint') |
+                        float }}
+                    action: climate.set_temperature
+                  - target:
+                      entity_id: input_boolean.kotol_preheat_active
+                    action: input_boolean.turn_off
+          - target:
+              entity_id: climate.kotol
+            data:
+              temperature: >
+                {{ state_attr('climate.kotol','current_temperature') | float - 1
+                }}
+            action: climate.set_temperature
+          - data:
+              channel_idx: 4
+              message: >
+                Heating OFF. Target set to {{
+                state_attr('climate.kotol','current_temperature') | float - 1 }}
+                °C
             action: meshcore.send_channel_message
 mode: queued
 ```
